@@ -19,24 +19,27 @@ class ViewController: UITableViewController {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
         
-        performSelector(inBackground: #selector(loadPictures), with: nil)
- 
-    }
-    
-    @objc func loadPictures() {
-        let fm = FileManager.default
-        let path = Bundle.main.resourcePath!
-        let items = try! fm.contentsOfDirectory(atPath: path)
-        for item in items {
-            //print(item)
-            if item.hasPrefix("nssl"){
-                //This is picture to load
-                pictures.append(item)
+        DispatchQueue.global(qos: .userInitiated).async {
+            [weak self] in
+            let fm = FileManager.default
+            let path = Bundle.main.resourcePath!
+            let items = try! fm.contentsOfDirectory(atPath: path)
+            for item in items {
+                //print(item)
+                if item.hasPrefix("nssl"){
+                    //This is picture to load
+                    self?.pictures.append(item)
+                }
+                self?.pictures.sort()
             }
-            pictures.sort()
+            print(self?.pictures ?? ["NA"])
+            
+            DispatchQueue.main.async {
+                [weak self] in
+                self?.tableView.reloadData()
+            }
         }
-        print(pictures)
-        tableView.performSelector(onMainThread: #selector(UITableView.reloadData), with: nil, waitUntilDone: false)
+ 
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
