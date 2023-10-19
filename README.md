@@ -1,3 +1,19 @@
+## [Project 12: UserDefaults](https://www.hackingwithswift.com/read/12/overview)
+Written by [Paul Hudson](https://www.hackingwithswift.com/about)  ![twitter16](https://github.com/juliangyurov/PH-Project6a/assets/13259596/445c8ea0-65c4-4dba-8e1f-3f2750f0ef51)
+  [@twostraws](https://twitter.com/twostraws)
+
+**Description:** Learn how to save user settings and data for later use.
+
+- Setting up
+
+- Reading and writing basics: UserDefaults
+
+- Fixing Project 10: NSCoding
+
+- Fixing Project 10: Codable
+
+- Wrap up
+
 ## [Review what you learned](https://www.hackingwithswift.com/review/hws/project-12-userdefaults)
 
 **Challenge**
