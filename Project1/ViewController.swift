@@ -10,10 +10,16 @@ import UIKit
 class ViewController: UITableViewController {
     
     var pictures = [String]()
+    var viewCounters = [Int]()
+    let defaults = UserDefaults.standard
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        if let savedViewCounters = defaults.object(forKey: "savedViewCounters") as? [Int] {
+            viewCounters = savedViewCounters
+        }
         navigationController?.navigationBar.prefersLargeTitles = true
         title = "Storm Viewer"
         
@@ -29,6 +35,9 @@ class ViewController: UITableViewController {
                 if item.hasPrefix("nssl"){
                     //This is picture to load
                     self?.pictures.append(item)
+                    if ((self?.viewCounters.isEmpty) != nil) {
+                        self?.viewCounters.append(0)
+                    }
                 }
                 self?.pictures.sort()
             }
@@ -47,6 +56,9 @@ class ViewController: UITableViewController {
             vc.selectedImage = pictures[indexPath.row]
             vc.selectedNumber = indexPath.row
             vc.numberImages = pictures.count
+            viewCounters[indexPath.row] += 1
+            defaults.set(viewCounters,forKey: "savedViewCounters")
+            tableView.reloadData()
             navigationController?.pushViewController(vc, animated: true)
         }
             
@@ -57,6 +69,7 @@ class ViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Picture", for: indexPath)
         cell.textLabel?.text = pictures[indexPath.row]
+        cell.detailTextLabel?.text = "Views: \(viewCounters[indexPath.row])"
         return cell
     }
     
